@@ -1,4 +1,5 @@
 ﻿using Keep.API.Interfaces;
+using Keep.API.Models.DTO;
 using Keep.API.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,7 @@ namespace Keep.API.Controllers
 
         [HttpGet]
         [Route("{id:guid}")]
+        [ActionName("GetNoteById")]
         [ProducesResponseType(200, Type = typeof(Note))]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetNoteById(Guid id)
@@ -37,6 +39,15 @@ namespace Keep.API.Controllers
             }
 
             return Ok(note);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(201, Type = typeof(Note))]
+        public async Task<IActionResult> AddNote(AddNoteRequest addNoteRequest)
+        {
+            var note = await _noteRepository.AddNote(addNoteRequest);
+
+            return CreatedAtAction(nameof(GetNoteById), new { id = note.Id }, note);
         }
     }
 }

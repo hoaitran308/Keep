@@ -1,4 +1,5 @@
-﻿using Keep.API.Models.Entities;
+﻿using Keep.API.Models.DTO;
+using Keep.API.Models.Entities;
 
 namespace Keep.API.Interfaces
 {
@@ -6,5 +7,6 @@ namespace Keep.API.Interfaces
     {
         Task<IEnumerable<Note>> GetAllNotes();
         Task<Note> GetNoteById(Guid id);
+        Task<Note> AddNote(AddNoteRequest addNoteRequest);
     }
 }
