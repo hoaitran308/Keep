@@ -1,4 +1,6 @@
 using Keep.API.Data;
+using Keep.API.Interfaces;
+using Keep.API.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<KeepDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("KeepConnectionString")));
+
+builder.Services.AddScoped<INoteRepository, NoteRepository>();
 
 var app = builder.Build();
 
