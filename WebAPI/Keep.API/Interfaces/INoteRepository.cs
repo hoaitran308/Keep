@@ -8,5 +8,7 @@ namespace Keep.API.Interfaces
         Task<IEnumerable<Note>> GetAllNotes();
         Task<Note> GetNoteById(Guid id);
         Task<Note> AddNote(AddNoteRequest addNoteRequest);
+        Task<Note> UpdateNote(UpdateNoteRequest updateNoteRequest, Guid noteId);
+        Task<bool> IsExistNote(Guid id);
     }
 }

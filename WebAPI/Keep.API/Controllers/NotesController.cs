@@ -49,5 +49,21 @@ namespace Keep.API.Controllers
 
             return CreatedAtAction(nameof(GetNoteById), new { id = note.Id }, note);
         }
+
+        [HttpPut]
+        [Route("{id:guid}")]
+        [ProducesResponseType(200, Type = typeof(Note))]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> UpdateNote([FromRoute] Guid id, UpdateNoteRequest updateNoteRequest)
+        {
+            if (!await _noteRepository.IsExistNote(id))
+            {
+                return BadRequest("The note is not exist");
+            }
+
+            var note = await _noteRepository.UpdateNote(updateNoteRequest, id);
+
+            return Ok(note);
+        }
     }
 }

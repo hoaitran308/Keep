@@ -42,5 +42,23 @@ namespace Keep.API.Repository
 
             return note;
         }
+
+        public async Task<Note> UpdateNote(UpdateNoteRequest updateNoteRequest, Guid noteId)
+        {
+            var note = await _context.Notes.FirstOrDefaultAsync(note => note.Id == noteId);
+
+            note.Title = updateNoteRequest.Title;
+            note.Content = updateNoteRequest.Content;
+            note.UpdatedDate = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return note;
+        }
+
+        public async Task<bool> IsExistNote(Guid id)
+        {
+            return await _context.Notes.AnyAsync(x => x.Id == id);
+        }
     }
 }
