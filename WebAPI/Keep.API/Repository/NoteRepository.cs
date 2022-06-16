@@ -17,12 +17,16 @@ namespace Keep.API.Repository
 
         public async Task<IEnumerable<Note>> GetAllNotes()
         {
-            return await _context.Notes.ToListAsync();
+            return await _context.Notes
+                                .Where(note => !note.IsDeleted)
+                                .ToListAsync();
         }
 
-        public async Task<Note> GetNoteById(Guid id)
+        public async Task<Note> GetNoteById(Guid noteId)
         {
-            return await _context.Notes.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Notes
+                                .Where(note => !note.IsDeleted)
+                                .FirstOrDefaultAsync(x => x.Id == noteId);
         }
 
         public async Task<Note> AddNote(AddNoteRequest addNoteRequest)
@@ -56,9 +60,18 @@ namespace Keep.API.Repository
             return note;
         }
 
-        public async Task<bool> IsExistNote(Guid id)
+        public async Task<bool> IsExistNote(Guid noteId)
         {
-            return await _context.Notes.AnyAsync(x => x.Id == id);
+            return await _context.Notes.AnyAsync(x => x.Id == noteId && !x.IsDeleted);
+        }
+
+        public async Task DeleteNote(Guid noteId)
+        {
+            var note = await _context.Notes.FirstOrDefaultAsync(note => note.Id == noteId);
+
+            note.IsDeleted = true;
+
+            await _context.SaveChangesAsync();
         }
     }
 }

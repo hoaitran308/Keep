@@ -54,7 +54,7 @@ namespace Keep.API.Controllers
         [Route("{id:guid}")]
         [ProducesResponseType(200, Type = typeof(Note))]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpdateNote([FromRoute] Guid id, UpdateNoteRequest updateNoteRequest)
+        public async Task<IActionResult> UpdateNote(Guid id, UpdateNoteRequest updateNoteRequest)
         {
             if (!await _noteRepository.IsExistNote(id))
             {
@@ -64,6 +64,22 @@ namespace Keep.API.Controllers
             var note = await _noteRepository.UpdateNote(updateNoteRequest, id);
 
             return Ok(note);
+        }
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> DeleteNote(Guid id)
+        {
+            if (!await _noteRepository.IsExistNote(id))
+            {
+                return BadRequest("The note is not exist");
+            }
+
+            await _noteRepository.DeleteNote(id);
+
+            return NoContent();
         }
     }
 }

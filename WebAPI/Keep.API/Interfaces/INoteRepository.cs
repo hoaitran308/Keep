@@ -6,9 +6,10 @@ namespace Keep.API.Interfaces
     public interface INoteRepository
     {
         Task<IEnumerable<Note>> GetAllNotes();
-        Task<Note> GetNoteById(Guid id);
+        Task<Note> GetNoteById(Guid noteId);
         Task<Note> AddNote(AddNoteRequest addNoteRequest);
         Task<Note> UpdateNote(UpdateNoteRequest updateNoteRequest, Guid noteId);
-        Task<bool> IsExistNote(Guid id);
+        Task<bool> IsExistNote(Guid noteId);
+        Task DeleteNote(Guid noteId);
     }
 }
